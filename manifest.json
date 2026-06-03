@@ -5,6 +5,6 @@
   "minAppVersion": "1.0.0",
   "description": "Track your TCG card collections (MTG, Pokémon, and more) directly in Obsidian.",
   "author": "Giomar Osorio",
-  "authorUrl": "",
+  "authorUrl": "https://github.com/GiomarOsorio",
   "isDesktopOnly": false
 }
