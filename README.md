@@ -5,6 +5,7 @@ Track your TCG card collections directly in Obsidian. Supports **Magic: The Gath
 ![Obsidian](https://img.shields.io/badge/Obsidian-Plugin-7c3aed?logo=obsidian&logoColor=white)
 ![License](https://img.shields.io/badge/license-AGPL--v3-green)
 ![Mobile](https://img.shields.io/badge/mobile-supported-blue)
+![Vicoded with Claude](https://img.shields.io/badge/vicoded_with-Claude_AI-cc785c?logo=anthropic&logoColor=white)
 
 ---
 
@@ -204,6 +205,12 @@ git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin dev && git push origin vX.Y.Z
 gh release create vX.Y.Z --prerelease --title "vX.Y.Z" --notes "…" \
   main.js manifest.json styles.css
 ```
+
+---
+
+## Built with AI
+
+This plugin was vicoded in collaboration with **[Claude AI](https://claude.ai)** by Anthropic.
 
 ---
 
