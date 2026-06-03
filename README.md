@@ -1,94 +1,212 @@
-# Obsidian Sample Plugin
+# Collectors — Obsidian Plugin
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Track your TCG card collections directly in Obsidian. Supports **Magic: The Gathering** (via Scryfall) and **Pokémon TCG** (via TCGdex). Works on desktop and mobile.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+![Obsidian](https://img.shields.io/badge/Obsidian-Plugin-7c3aed?logo=obsidian&logoColor=white)
+![License](https://img.shields.io/badge/license-AGPL--v3-green)
+![Mobile](https://img.shields.io/badge/mobile-supported-blue)
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+---
 
-## First time developing plugins?
+## Supported Games
 
-Quick starting guide for new plugin devs:
+| Game | Status | Data source | Prices |
+|------|--------|-------------|--------|
+| Magic: The Gathering | ✅ Full support | Scryfall | Scryfall USD/EUR · TCGPlayer · Cardmarket |
+| Pokémon TCG | ✅ Full support | TCGdex (free, no key) | TCGPlayer USD · Cardmarket EUR |
+| One Piece TCG | 🚧 Planned | — | — |
+| Yu-Gi-Oh! | 🚧 Planned | — | — |
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+Game-specific documentation:
 
-## Releasing new releases
+- [Magic: The Gathering](docs/mtg.md)
+- [Pokémon TCG](docs/pokemon.md)
+- [One Piece TCG](docs/onepiece.md) *(coming soon)*
+- [Yu-Gi-Oh!](docs/yugioh.md) *(coming soon)*
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+---
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+## Features
 
-## Adding your plugin to the community plugin list
+- **Dashboard** — all collections at a glance: cards owned, total invested, cost to complete
+- **Live prices** — fetched per session, cached in memory (MTG) or on disk (Pokémon 24h)
+- **Card grid** — artwork, filter owned/missing, sort by name / number / price / release
+- **Toggle ownership** — click ✓/+ on any card; writes instantly to the markdown file
+- **Variant-aware rows** — MTG: foil / nonfoil · Pokémon: Normal / Reverse Holo / Holo / 1st Edition
+- **Auto-fetch** — populate a collection from an API on creation (set code or search query)
+- **Card search** — search by name, browse all printings, add individual copies
+- **Multiple price sources** — per-game price provider selection in settings
+- **i18n** — UI available in EN · ES · FR · DE · PT · JA · ZH · ZH-TW
+- **Mobile** — works on iOS and Android via BRAT or manual install
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+---
 
-## How to use
+## Installation
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+> This plugin is not yet in the Obsidian community registry. Install manually.
 
-## Manually installing the plugin
+### Desktop
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+1. Clone or download this repo:
+   ```bash
+   git clone https://github.com/GiomarOsorio/obsidian-tcg-collectors
+   ```
+2. Build:
+   ```bash
+   cd obsidian-tcg-collectors
+   npm install && npm run build
+   ```
+3. Symlink into your vault:
+   ```bash
+   ln -s "$(pwd)" "/path/to/Your Vault/.obsidian/plugins/collectors-plugin"
+   ```
+4. In Obsidian → **Settings → Community Plugins** → enable **Collectors**.
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
+### Mobile (iOS / Android) via BRAT
 
-## Funding URL
+1. Install [BRAT](https://github.com/TfTHacker/obsidian42-brat) from the Community Plugins.
+2. BRAT settings → **Add Beta Plugin** → paste:
+   ```
+   https://github.com/GiomarOsorio/obsidian-tcg-collectors
+   ```
+3. Enable **Collectors** in Community Plugins.
 
-You can include funding URLs where people who use your plugin can financially support it.
+On updates: BRAT → **Check for updates** → plugin reloads automatically.
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+### Mobile (manual)
 
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+Copy `main.js`, `manifest.json`, and `styles.css` into:
+```
+<Your Vault>/.obsidian/plugins/collectors-plugin/
 ```
 
-If you have multiple URLs, you can also do:
+---
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+## Quick Start
+
+1. Open the dashboard: click the **card icon** in the ribbon, or run `Collectors: Open Dashboard`.
+2. Click **+ New Collection** → choose a game → fill in the set / query.
+3. Cards are auto-fetched and appear in the grid. Click ✓ to mark cards as owned.
+
+---
+
+## Collection File Format
+
+Collections are plain Obsidian markdown files (`.collection` extension), fully human-editable.
+
+### MTG example
+
+```yaml
+---
+cssclasses: collectors-file
+collection-type: mtg-set
+collection-name: Bloomburrow Token Boosters
+set-code: TBLB
+finish-import: all
+all-prints: true
+---
+
+| Owned | Image | Name | Type | Rarity | Set | Number | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <input type="checkbox" checked id="abc123_n"> | ![Card (Normal)](https://...) | Card (Normal) | Creature | common | TBLB | 5 |  |
+| <input type="checkbox" unchecked id="abc123_f"> | ![Card (Foil)](https://...)  | Card (Foil)   | Creature | common | TBLB | 5 |  |
 ```
 
-## API Documentation
+### Pokémon example
 
-See https://github.com/obsidianmd/obsidian-api
+```yaml
+---
+cssclasses: collectors-file
+collection-type: pokemon-set
+collection-name: Sword & Shield
+tcgdex-set-id: swsh1
+pokemon-variant-import: all
+---
+
+| Owned | Image | Name | Type | Rarity | Set | Number | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <input type="checkbox" unchecked id="swsh1-1_n"> | ![Caterpie (Normal)](https://...) | Caterpie (Normal) | Grass | Common | swsh1 | 1 |  |
+| <input type="checkbox" unchecked id="swsh1-1_r"> | ![Caterpie (Reverse Holo)](https://...) | Caterpie (Reverse Holo) | Grass | Common | swsh1 | 1 |  |
+```
+
+Card ID format:
+- MTG: `{scryfall_id_first8}_{n|f}` — `_n` nonfoil · `_f` foil
+- Pokémon: `{setId}-{localId}_{suffix}` — `_n` normal · `_r` reverse · `_h` holo · `_fe` 1st edition
+
+---
+
+## Settings
+
+Open **Settings → Collectors** to configure:
+
+| Tab | Options |
+|-----|---------|
+| General | Collections folder, auto-detect |
+| Magic: The Gathering | Price source (Scryfall USD/EUR, TCGPlayer, Cardmarket), API keys |
+| Pokémon | Price source (TCGPlayer USD · Cardmarket EUR) |
+| One Piece | *(coming soon)* |
+| Yu-Gi-Oh! | *(coming soon)* |
+
+---
+
+## Development
+
+### Prerequisites
+
+- Node.js 18+, npm
+
+### Setup
+
+```bash
+git clone https://github.com/GiomarOsorio/obsidian-tcg-collectors
+cd obsidian-tcg-collectors
+npm install
+ln -s "$(pwd)" "/path/to/Your Vault/.obsidian/plugins/collectors-plugin"
+```
+
+### Workflow
+
+```bash
+npm run dev    # watch mode
+npm run build  # type-check + production bundle
+```
+
+After a rebuild: **Settings → Community Plugins** → toggle Collectors off/on.
+
+### Project Structure
+
+```
+src/
+  main.ts               # Plugin entry, commands, ribbon, view registration
+  types.ts              # TypeScript interfaces, CollectionType, DEFAULT_SETTINGS
+  parser.ts             # .collection file parser, appendCards, owned-state helpers
+  migrations.ts         # Schema migration helpers
+  ScryfallService.ts    # Scryfall API client (set fetch, search, prices, pagination)
+  TCGDexService.ts      # TCGdex API client (Pokémon sets, cards, prices)
+  PriceService.ts       # Multi-provider price layer (MTG + Pokémon, persistent cache)
+  DashboardView.ts      # Dashboard: hero stats, collection groups, prefetch
+  CollectionView.ts     # FileView: card grid, filters, sort, variant badges
+  NewCollectionModal.ts # Create/edit wizard: MTG + Pokémon forms, set catalog
+  CardSearchModal.ts    # Card name search, printings browser, add to collection
+  CardZoomModal.ts      # Full-screen card zoom
+  settings.ts           # Settings tab (per-game tabs)
+  i18n/                 # Translations: en · es · fr · de · pt · ja · zh · zh-TW
+styles.css              # All CSS (light/dark theme)
+manifest.json
+```
+
+### Releasing
+
+```bash
+npm run build
+git add main.js manifest.json styles.css && git commit -m "chore: bump vX.Y.Z"
+git tag -a vX.Y.Z -m "vX.Y.Z" && git push origin dev && git push origin vX.Y.Z
+gh release create vX.Y.Z --prerelease --title "vX.Y.Z" --notes "…" \
+  main.js manifest.json styles.css
+```
+
+---
+
+## License
+
+GNU Affero General Public License v3.0 — see [LICENSE](LICENSE)
