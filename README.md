@@ -1,4 +1,4 @@
-# Collectors — Obsidian Plugin
+# TCG Collectors — Obsidian Plugin
 
 Track your TCG card collections directly in Obsidian. Supports **Magic: The Gathering** (via Scryfall) and **Pokémon TCG** (via TCGdex). Works on desktop and mobile.
 
